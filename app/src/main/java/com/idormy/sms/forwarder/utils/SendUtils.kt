@@ -123,85 +123,85 @@ object SendUtils {
                 }
             }
             when (sender.type) {
-                TYPE_DINGTALK_GROUP_ROBOT -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, DingtalkGroupRobotSetting::class.java)
-                    DingtalkGroupRobotUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
+//                TYPE_DINGTALK_GROUP_ROBOT -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, DingtalkGroupRobotSetting::class.java)
+//                    DingtalkGroupRobotUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_EMAIL -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, EmailSetting::class.java)
+//                    EmailUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_BARK -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, BarkSetting::class.java)
+//                    BarkUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
 
-                TYPE_EMAIL -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, EmailSetting::class.java)
-                    EmailUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_BARK -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, BarkSetting::class.java)
-                    BarkUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_WEBHOOK -> {
+                0 -> {
                     val settingVo = Gson().fromJson(sender.jsonSetting, WebhookSetting::class.java)
                     WebhookUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
                 }
 
-                TYPE_WEWORK_ROBOT -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, WeworkRobotSetting::class.java)
-                    WeworkRobotUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
+//                TYPE_WEWORK_ROBOT -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, WeworkRobotSetting::class.java)
+//                    WeworkRobotUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_WEWORK_AGENT -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, WeworkAgentSetting::class.java)
+//                    WeworkAgentUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_SERVERCHAN -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, ServerchanSetting::class.java)
+//                    ServerchanUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_TELEGRAM -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, TelegramSetting::class.java)
+//                    TelegramUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
 
-                TYPE_WEWORK_AGENT -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, WeworkAgentSetting::class.java)
-                    WeworkAgentUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_SERVERCHAN -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, ServerchanSetting::class.java)
-                    ServerchanUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_TELEGRAM -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, TelegramSetting::class.java)
-                    TelegramUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_SMS -> {
+                1 -> {
                     val settingVo = Gson().fromJson(sender.jsonSetting, SmsSetting::class.java)
                     SmsUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
                 }
 
-                TYPE_FEISHU -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, FeishuSetting::class.java)
-                    FeishuUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_PUSHPLUS -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, PushplusSetting::class.java)
-                    PushplusUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_GOTIFY -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, GotifySetting::class.java)
-                    GotifyUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_DINGTALK_INNER_ROBOT -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, DingtalkInnerRobotSetting::class.java)
-                    DingtalkInnerRobotUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_FEISHU_APP -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, FeishuAppSetting::class.java)
-                    FeishuAppUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_URL_SCHEME -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, UrlSchemeSetting::class.java)
-                    UrlSchemeUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
-
-                TYPE_SOCKET -> {
-                    val settingVo = Gson().fromJson(sender.jsonSetting, SocketSetting::class.java)
-                    SocketUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
-                }
+//                TYPE_FEISHU -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, FeishuSetting::class.java)
+//                    FeishuUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_PUSHPLUS -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, PushplusSetting::class.java)
+//                    PushplusUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_GOTIFY -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, GotifySetting::class.java)
+//                    GotifyUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_DINGTALK_INNER_ROBOT -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, DingtalkInnerRobotSetting::class.java)
+//                    DingtalkInnerRobotUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_FEISHU_APP -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, FeishuAppSetting::class.java)
+//                    FeishuAppUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_URL_SCHEME -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, UrlSchemeSetting::class.java)
+//                    UrlSchemeUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
+//
+//                TYPE_SOCKET -> {
+//                    val settingVo = Gson().fromJson(sender.jsonSetting, SocketSetting::class.java)
+//                    SocketUtils.sendMsg(settingVo, msgInfo, rule, senderIndex, logId, msgId)
+//                }
 
                 else -> {
                     updateLogs(logId, 0, getString(R.string.unknown_sender))

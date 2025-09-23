@@ -88,27 +88,27 @@ class SendersFragment : BaseFragment<FragmentSendersBinding?>(),
     private val dialog: BottomSheetDialog by lazy { BottomSheetDialog(requireContext()) }
     private var currentStatus: Int = 1
     private var SENDER_FRAGMENT_LIST = listOf(
-        PageInfo(
-            getString(R.string.dingtalk_robot),
-            "com.idormy.sms.forwarder.fragment.senders.DingtalkGroupRobotFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_dingtalk
-        ),
-        PageInfo(
-            getString(R.string.email),
-            "com.idormy.sms.forwarder.fragment.senders.EmailFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_email
-        ),
-        PageInfo(
-            getString(R.string.bark),
-            "com.idormy.sms.forwarder.fragment.senders.BarkFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_bark
-        ),
+//        PageInfo(
+//            getString(R.string.dingtalk_robot),
+//            "com.idormy.sms.forwarder.fragment.senders.DingtalkGroupRobotFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_dingtalk
+//        ),
+//        PageInfo(
+//            getString(R.string.email),
+//            "com.idormy.sms.forwarder.fragment.senders.EmailFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_email
+//        ),
+//        PageInfo(
+//            getString(R.string.bark),
+//            "com.idormy.sms.forwarder.fragment.senders.BarkFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_bark
+//        ),
         PageInfo(
             getString(R.string.webhook),
             "com.idormy.sms.forwarder.fragment.senders.WebhookFragment",
@@ -116,34 +116,34 @@ class SendersFragment : BaseFragment<FragmentSendersBinding?>(),
             CoreAnim.slide,
             R.drawable.icon_webhook
         ),
-        PageInfo(
-            getString(R.string.wework_robot),
-            "com.idormy.sms.forwarder.fragment.senders.WeworkRobotFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_wework_robot
-        ),
-        PageInfo(
-            getString(R.string.wework_agent),
-            "com.idormy.sms.forwarder.fragment.senders.WeworkAgentFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_wework_agent
-        ),
-        PageInfo(
-            getString(R.string.server_chan),
-            "com.idormy.sms.forwarder.fragment.senders.ServerchanFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_serverchan
-        ),
-        PageInfo(
-            getString(R.string.telegram),
-            "com.idormy.sms.forwarder.fragment.senders.TelegramFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_telegram
-        ),
+//        PageInfo(
+//            getString(R.string.wework_robot),
+//            "com.idormy.sms.forwarder.fragment.senders.WeworkRobotFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_wework_robot
+//        ),
+//        PageInfo(
+//            getString(R.string.wework_agent),
+//            "com.idormy.sms.forwarder.fragment.senders.WeworkAgentFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_wework_agent
+//        ),
+//        PageInfo(
+//            getString(R.string.server_chan),
+//            "com.idormy.sms.forwarder.fragment.senders.ServerchanFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_serverchan
+//        ),
+//        PageInfo(
+//            getString(R.string.telegram),
+//            "com.idormy.sms.forwarder.fragment.senders.TelegramFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_telegram
+//        ),
         PageInfo(
             getString(R.string.sms_menu),
             "com.idormy.sms.forwarder.fragment.senders.SmsFragment",
@@ -151,55 +151,55 @@ class SendersFragment : BaseFragment<FragmentSendersBinding?>(),
             CoreAnim.slide,
             R.drawable.icon_sms
         ),
-        PageInfo(
-            getString(R.string.feishu),
-            "com.idormy.sms.forwarder.fragment.senders.FeishuFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_feishu
-        ),
-        PageInfo(
-            getString(R.string.pushplus),
-            "com.idormy.sms.forwarder.fragment.senders.PushplusFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_pushplus
-        ),
-        PageInfo(
-            getString(R.string.gotify),
-            "com.idormy.sms.forwarder.fragment.senders.GotifyFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_gotify
-        ),
-        PageInfo(
-            getString(R.string.dingtalk_inner_robot),
-            "com.idormy.sms.forwarder.fragment.senders.DingtalkInnerRobotFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_dingtalk_inner
-        ),
-        PageInfo(
-            getString(R.string.feishu_app),
-            "com.idormy.sms.forwarder.fragment.senders.FeishuAppFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_feishu_app
-        ),
-        PageInfo(
-            getString(R.string.url_scheme),
-            "com.idormy.sms.forwarder.fragment.senders.UrlSchemeFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_url_scheme
-        ),
-        PageInfo(
-            getString(R.string.socket),
-            "com.idormy.sms.forwarder.fragment.senders.SocketFragment",
-            "{\"\":\"\"}",
-            CoreAnim.slide,
-            R.drawable.icon_socket
-        ),
+//        PageInfo(
+//            getString(R.string.feishu),
+//            "com.idormy.sms.forwarder.fragment.senders.FeishuFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_feishu
+//        ),
+//        PageInfo(
+//            getString(R.string.pushplus),
+//            "com.idormy.sms.forwarder.fragment.senders.PushplusFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_pushplus
+//        ),
+//        PageInfo(
+//            getString(R.string.gotify),
+//            "com.idormy.sms.forwarder.fragment.senders.GotifyFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_gotify
+//        ),
+//        PageInfo(
+//            getString(R.string.dingtalk_inner_robot),
+//            "com.idormy.sms.forwarder.fragment.senders.DingtalkInnerRobotFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_dingtalk_inner
+//        ),
+//        PageInfo(
+//            getString(R.string.feishu_app),
+//            "com.idormy.sms.forwarder.fragment.senders.FeishuAppFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_feishu_app
+//        ),
+//        PageInfo(
+//            getString(R.string.url_scheme),
+//            "com.idormy.sms.forwarder.fragment.senders.UrlSchemeFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_url_scheme
+//        ),
+//        PageInfo(
+//            getString(R.string.socket),
+//            "com.idormy.sms.forwarder.fragment.senders.SocketFragment",
+//            "{\"\":\"\"}",
+//            CoreAnim.slide,
+//            R.drawable.icon_socket
+//        ),
     )
 
     override fun viewBindingInflate(
@@ -338,22 +338,22 @@ class SendersFragment : BaseFragment<FragmentSendersBinding?>(),
 
     private fun getFragment(type: Int): Class<out XPageFragment> {
         return when (type) {
-            TYPE_DINGTALK_GROUP_ROBOT -> DingtalkGroupRobotFragment::class.java
-            TYPE_EMAIL -> EmailFragment::class.java
-            TYPE_BARK -> BarkFragment::class.java
-            TYPE_WEBHOOK -> WebhookFragment::class.java
-            TYPE_WEWORK_ROBOT -> WeworkRobotFragment::class.java
-            TYPE_WEWORK_AGENT -> WeworkAgentFragment::class.java
-            TYPE_SERVERCHAN -> ServerchanFragment::class.java
-            TYPE_TELEGRAM -> TelegramFragment::class.java
-            TYPE_SMS -> SmsFragment::class.java
-            TYPE_FEISHU -> FeishuFragment::class.java
-            TYPE_PUSHPLUS -> PushplusFragment::class.java
-            TYPE_GOTIFY -> GotifyFragment::class.java
-            TYPE_DINGTALK_INNER_ROBOT -> DingtalkInnerRobotFragment::class.java
-            TYPE_FEISHU_APP -> FeishuAppFragment::class.java
-            TYPE_URL_SCHEME -> UrlSchemeFragment::class.java
-            TYPE_SOCKET -> SocketFragment::class.java
+//            TYPE_DINGTALK_GROUP_ROBOT -> DingtalkGroupRobotFragment::class.java
+//            TYPE_EMAIL -> EmailFragment::class.java
+//            TYPE_BARK -> BarkFragment::class.java
+            0 -> WebhookFragment::class.java
+//            TYPE_WEWORK_ROBOT -> WeworkRobotFragment::class.java
+//            TYPE_WEWORK_AGENT -> WeworkAgentFragment::class.java
+//            TYPE_SERVERCHAN -> ServerchanFragment::class.java
+//            TYPE_TELEGRAM -> TelegramFragment::class.java
+            1 -> SmsFragment::class.java
+//            TYPE_FEISHU -> FeishuFragment::class.java
+//            TYPE_PUSHPLUS -> PushplusFragment::class.java
+//            TYPE_GOTIFY -> GotifyFragment::class.java
+//            TYPE_DINGTALK_INNER_ROBOT -> DingtalkInnerRobotFragment::class.java
+//            TYPE_FEISHU_APP -> FeishuAppFragment::class.java
+//            TYPE_URL_SCHEME -> UrlSchemeFragment::class.java
+//            TYPE_SOCKET -> SocketFragment::class.java
             else -> DingtalkGroupRobotFragment::class.java
         }
     }

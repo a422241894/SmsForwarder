@@ -39,22 +39,22 @@ data class Sender(
 
     val imageId: Int
         get() = when (type) {
-            TYPE_DINGTALK_GROUP_ROBOT -> R.drawable.icon_dingtalk
-            TYPE_EMAIL -> R.drawable.icon_email
-            TYPE_BARK -> R.drawable.icon_bark
-            TYPE_WEBHOOK -> R.drawable.icon_webhook
-            TYPE_WEWORK_ROBOT -> R.drawable.icon_wework_robot
-            TYPE_WEWORK_AGENT -> R.drawable.icon_wework_agent
-            TYPE_SERVERCHAN -> R.drawable.icon_serverchan
-            TYPE_TELEGRAM -> R.drawable.icon_telegram
-            TYPE_FEISHU -> R.drawable.icon_feishu
-            TYPE_PUSHPLUS -> R.drawable.icon_pushplus
-            TYPE_GOTIFY -> R.drawable.icon_gotify
-            TYPE_SMS -> R.drawable.icon_sms
-            TYPE_DINGTALK_INNER_ROBOT -> R.drawable.icon_dingtalk_inner
-            TYPE_FEISHU_APP -> R.drawable.icon_feishu_app
-            TYPE_URL_SCHEME -> R.drawable.icon_url_scheme
-            TYPE_SOCKET -> R.drawable.icon_socket
+//            TYPE_DINGTALK_GROUP_ROBOT -> R.drawable.icon_dingtalk
+//            TYPE_EMAIL -> R.drawable.icon_email
+//            TYPE_BARK -> R.drawable.icon_bark
+            0 -> R.drawable.icon_webhook
+//            TYPE_WEWORK_ROBOT -> R.drawable.icon_wework_robot
+//            TYPE_WEWORK_AGENT -> R.drawable.icon_wework_agent
+//            TYPE_SERVERCHAN -> R.drawable.icon_serverchan
+//            TYPE_TELEGRAM -> R.drawable.icon_telegram
+//            TYPE_FEISHU -> R.drawable.icon_feishu
+//            TYPE_PUSHPLUS -> R.drawable.icon_pushplus
+//            TYPE_GOTIFY -> R.drawable.icon_gotify
+            1 -> R.drawable.icon_sms
+//            TYPE_DINGTALK_INNER_ROBOT -> R.drawable.icon_dingtalk_inner
+//            TYPE_FEISHU_APP -> R.drawable.icon_feishu_app
+//            TYPE_URL_SCHEME -> R.drawable.icon_url_scheme
+//            TYPE_SOCKET -> R.drawable.icon_socket
             else -> R.drawable.icon_sms
         }
 

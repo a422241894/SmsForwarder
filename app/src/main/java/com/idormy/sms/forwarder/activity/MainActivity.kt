@@ -179,8 +179,8 @@ class MainActivity : BaseActivity<ActivityMainBinding?>(), DrawerAdapter.OnItemS
 
         //仅当开启自动检查且有网络时自动检查更新/获取提示
         if (SettingUtils.autoCheckUpdate && NetworkUtils.isHaveInternet()) {
-            showTips(this)
-            XUpdateInit.checkUpdate(this, false, SettingUtils.joinPreviewProgram)
+            //showTips(this)
+            //XUpdateInit.checkUpdate(this, false, SettingUtils.joinPreviewProgram)
         }
     }
 
@@ -217,13 +217,13 @@ class MainActivity : BaseActivity<ActivityMainBinding?>(), DrawerAdapter.OnItemS
                 createItemFor(POS_SETTING),
                 SpaceItem(15),
                 createItemFor(POS_TASK),
-                createItemFor(POS_SERVER),
-                createItemFor(POS_CLIENT),
-                createItemFor(POS_FRPC),
-                createItemFor(POS_APPS),
-                SpaceItem(15),
-                createItemFor(POS_HELP),
-                createItemFor(POS_ABOUT),
+//                createItemFor(POS_SERVER),
+//                createItemFor(POS_CLIENT),
+//                createItemFor(POS_FRPC),
+//                createItemFor(POS_APPS),
+//                SpaceItem(15),
+//                createItemFor(POS_HELP),
+//                createItemFor(POS_ABOUT),
             )
         )
         mAdapter.setListener(this)

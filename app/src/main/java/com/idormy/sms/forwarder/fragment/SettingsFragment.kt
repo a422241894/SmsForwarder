@@ -92,12 +92,12 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
     private var initViewsFinished = false
 
     //已安装App信息列表
-    private val appListSpinnerList = ArrayList<AppListAdapterItem>()
-    private lateinit var appListSpinnerAdapter: AppListSpinnerAdapter<*>
-    private val appListObserver = Observer { it: String ->
-        Log.d(TAG, "EVENT_LOAD_APP_LIST: $it")
-        initAppSpinner()
-    }
+//    private val appListSpinnerList = ArrayList<AppListAdapterItem>()
+//    private lateinit var appListSpinnerAdapter: AppListSpinnerAdapter<*>
+//    private val appListObserver = Observer { it: String ->
+//        Log.d(TAG, "EVENT_LOAD_APP_LIST: $it")
+//        initAppSpinner()
+//    }
 
     override fun viewBindingInflate(
         inflater: LayoutInflater,
@@ -139,20 +139,35 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
         //转发短信广播
         switchEnableSms(binding!!.sbEnableSms)
         //转发通话记录
-        switchEnablePhone(binding!!.sbEnablePhone, binding!!.scbCallType1, binding!!.scbCallType2, binding!!.scbCallType3, binding!!.scbCallType4, binding!!.scbCallType5, binding!!.scbCallType6)
-        //转发应用通知
-        switchEnableAppNotify(binding!!.sbEnableAppNotify, binding!!.scbCancelAppNotify, binding!!.scbNotUserPresent)
-
-        //发现蓝牙设备服务
-        switchEnableBluetooth(binding!!.sbEnableBluetooth, binding!!.layoutBluetoothSetting, binding!!.xsbScanInterval, binding!!.scbIgnoreAnonymous)
-        //GPS定位功能
-        switchEnableLocation(binding!!.sbEnableLocation, binding!!.layoutLocationSetting, binding!!.rgAccuracy, binding!!.rgPowerRequirement, binding!!.xsbMinInterval, binding!!.xsbMinDistance)
-        //短信指令
-        switchEnableSmsCommand(binding!!.sbEnableSmsCommand, binding!!.etSafePhone)
-        //启动时异步获取已安装App信息
-        switchEnableLoadAppList(binding!!.sbEnableLoadAppList, binding!!.scbLoadUserApp, binding!!.scbLoadSystemApp)
-        //设置自动消除额外APP通知
-        editExtraAppList(binding!!.etAppList)
+//        switchEnablePhone(binding!!.sbEnablePhone, binding!!.scbCallType1, binding!!.scbCallType2, binding!!.scbCallType3, binding!!.scbCallType4, binding!!.scbCallType5, binding!!.scbCallType6)
+//        //转发应用通知
+//        //转发应用通知
+//        //switchEnableAppNotify(binding!!.sbEnableAppNotify, binding!!.scbCancelAppNotify, binding!!.scbNotUserPresent)
+//        binding!!.sbEnableAppNotify.isEnabled = false
+//        binding!!.sbEnableAppNotify.isClickable = false
+//        binding!!.sbEnableAppNotify.visibility = View.GONE
+//        binding!!.layoutOptionalAction.visibility = View.GONE
+//        binding!!.scbCancelAppNotify.isEnabled = false
+//        binding!!.scbCancelAppNotify.isClickable = false
+//        binding!!.scbCancelAppNotify.visibility = View.GONE
+//        binding!!.scbNotUserPresent.isEnabled = false
+//        binding!!.scbNotUserPresent.isClickable = false
+//        binding!!.scbNotUserPresent.visibility = View.GONE
+//        //发现蓝牙设备服务
+//        switchEnableBluetooth(binding!!.sbEnableBluetooth, binding!!.layoutBluetoothSetting, binding!!.xsbScanInterval, binding!!.scbIgnoreAnonymous)
+//        //GPS定位功能
+//        switchEnableLocation(binding!!.sbEnableLocation, binding!!.layoutLocationSetting, binding!!.rgAccuracy, binding!!.rgPowerRequirement, binding!!.xsbMinInterval, binding!!.xsbMinDistance)
+//        //短信指令
+//        switchEnableSmsCommand(binding!!.sbEnableSmsCommand, binding!!.etSafePhone)
+//        //启动时异步获取已安装App信息
+//        switchEnableLoadAppList(binding!!.sbEnableLoadAppList, binding!!.scbLoadUserApp, binding!!.scbLoadSystemApp)
+//        //设置自动消除额外APP通知
+//        //editExtraAppList(binding!!.etAppList)
+//        binding!!.layoutAppList.visibility = View.GONE
+//        binding!!.layoutSpApp.visibility = View.GONE
+//        binding!!.etAppList.isEnabled = false
+//        binding!!.etAppList.isFocusable = false
+//        binding!!.etAppList.isFocusableInTouchMode = false
         //自动过滤多久内重复消息
         binding!!.xsbDuplicateMessagesLimits.setDefaultValue(SettingUtils.duplicateMessagesLimits)
         binding!!.xsbDuplicateMessagesLimits.setOnSeekBarListener { _: XSeekBar?, newValue: Int ->
@@ -199,7 +214,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
         //自定义模板
         editSmsTemplate(binding!!.etSmsTemplate)
         //纯客户端模式
-        switchDirectlyToClient(binding!!.sbDirectlyToClient)
+//        switchDirectlyToClient(binding!!.sbDirectlyToClient)
         //纯自动任务模式
         switchDirectlyToTask(binding!!.sbDirectlyToTask)
         //调试模式
@@ -213,7 +228,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
     override fun onResume() {
         super.onResume()
         //初始化APP下拉列表
-        initAppSpinner()
+       // initAppSpinner()
     }
 
     override fun initListeners() {
@@ -224,7 +239,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
         binding!!.btnExportLog.setOnClickListener(this)
 
         //监听已安装App信息列表加载完成事件
-        LiveEventBus.get(EVENT_LOAD_APP_LIST, String::class.java).observeStickyForever(appListObserver)
+//        LiveEventBus.get(EVENT_LOAD_APP_LIST, String::class.java).observeStickyForever(appListObserver)
     }
 
     @SuppressLint("SetTextI18n")
@@ -480,43 +495,43 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
         }
     }
 
-    //转发应用通知
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private fun switchEnableAppNotify(sbEnableAppNotify: SwitchButton, scbCancelAppNotify: SmoothCheckBox, scbNotUserPresent: SmoothCheckBox) {
-        sbEnableAppNotify.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            binding!!.layoutOptionalAction.visibility = if (isChecked) View.VISIBLE else View.GONE
-            SettingUtils.enableAppNotify = isChecked
-            if (isChecked) {
-                XXPermissions.with(this)
-                    .permission(Permission.BIND_NOTIFICATION_LISTENER_SERVICE)
-                    .request(OnPermissionCallback { permissions, allGranted ->
-                        if (!allGranted) {
-                            Log.e(TAG, "onGranted: permissions=$permissions, allGranted=false")
-                            SettingUtils.enableAppNotify = false
-                            sbEnableAppNotify.isChecked = false
-                            XToastUtils.error(R.string.tips_notification_listener)
-                            return@OnPermissionCallback
-                        }
-
-                        SettingUtils.enableAppNotify = true
-                        sbEnableAppNotify.isChecked = true
-                        CommonUtils.toggleNotificationListenerService(requireContext())
-                    })
-            }
-        }
-        val isEnable = SettingUtils.enableAppNotify
-        sbEnableAppNotify.isChecked = isEnable
-        binding!!.layoutOptionalAction.visibility = if (isEnable) View.VISIBLE else View.GONE
-
-        scbCancelAppNotify.isChecked = SettingUtils.enableCancelAppNotify
-        scbCancelAppNotify.setOnCheckedChangeListener { _: SmoothCheckBox, isChecked: Boolean ->
-            SettingUtils.enableCancelAppNotify = isChecked
-        }
-        scbNotUserPresent.isChecked = SettingUtils.enableNotUserPresent
-        scbNotUserPresent.setOnCheckedChangeListener { _: SmoothCheckBox, isChecked: Boolean ->
-            SettingUtils.enableNotUserPresent = isChecked
-        }
-    }
+//    //转发应用通知
+//    @SuppressLint("UseSwitchCompatOrMaterialCode")
+//    private fun switchEnableAppNotify(sbEnableAppNotify: SwitchButton, scbCancelAppNotify: SmoothCheckBox, scbNotUserPresent: SmoothCheckBox) {
+//        sbEnableAppNotify.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+//            binding!!.layoutOptionalAction.visibility = if (isChecked) View.VISIBLE else View.GONE
+//            SettingUtils.enableAppNotify = isChecked
+//            if (isChecked) {
+//                XXPermissions.with(this)
+//                    .permission(Permission.BIND_NOTIFICATION_LISTENER_SERVICE)
+//                    .request(OnPermissionCallback { permissions, allGranted ->
+//                        if (!allGranted) {
+//                            Log.e(TAG, "onGranted: permissions=$permissions, allGranted=false")
+//                            SettingUtils.enableAppNotify = false
+//                            sbEnableAppNotify.isChecked = false
+//                            XToastUtils.error(R.string.tips_notification_listener)
+//                            return@OnPermissionCallback
+//                        }
+//
+//                        SettingUtils.enableAppNotify = true
+//                        sbEnableAppNotify.isChecked = true
+//                        CommonUtils.toggleNotificationListenerService(requireContext())
+//                    })
+//            }
+//        }
+//        val isEnable = SettingUtils.enableAppNotify
+//        sbEnableAppNotify.isChecked = isEnable
+//        binding!!.layoutOptionalAction.visibility = if (isEnable) View.VISIBLE else View.GONE
+//
+//        scbCancelAppNotify.isChecked = SettingUtils.enableCancelAppNotify
+//        scbCancelAppNotify.setOnCheckedChangeListener { _: SmoothCheckBox, isChecked: Boolean ->
+//            SettingUtils.enableCancelAppNotify = isChecked
+//        }
+//        scbNotUserPresent.isChecked = SettingUtils.enableNotUserPresent
+//        scbNotUserPresent.setOnCheckedChangeListener { _: SmoothCheckBox, isChecked: Boolean ->
+//            SettingUtils.enableNotUserPresent = isChecked
+//        }
+//    }
 
     //发现蓝牙设备服务
     private fun switchEnableBluetooth(@SuppressLint("UseSwitchCompatOrMaterialCode") sbEnableBluetooth: SwitchButton, layoutBluetoothSetting: LinearLayout, xsbScanInterval: XSeekBar, scbIgnoreAnonymous: SmoothCheckBox) {
@@ -587,8 +602,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
         if (SettingUtils.enableBluetooth && (!BluetoothUtils.isBluetoothEnabled() || !BluetoothUtils.hasBluetoothCapability(App.context))) {
             XToastUtils.error(getString(R.string.toast_bluetooth_not_enabled))
             SettingUtils.enableBluetooth = false
-            binding!!.sbEnableBluetooth.isChecked = false
-            binding!!.layoutBluetoothSetting.visibility = View.GONE
+//            binding!!.sbEnableBluetooth.isChecked = false
+//            binding!!.layoutBluetoothSetting.visibility = View.GONE
             serviceIntent.action = ACTION_STOP
         } else {
             serviceIntent.action = action
@@ -705,8 +720,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
         if (SettingUtils.enableLocation && (!LocationUtils.isLocationEnabled(App.context) || !LocationUtils.hasLocationCapability(App.context))) {
             XToastUtils.error(getString(R.string.toast_location_not_enabled))
             SettingUtils.enableLocation = false
-            binding!!.sbEnableLocation.isChecked = false
-            binding!!.layoutLocationSetting.visibility = View.GONE
+//            binding!!.sbEnableLocation.isChecked = false
+//            binding!!.layoutLocationSetting.visibility = View.GONE
             serviceIntent.action = ACTION_STOP
         } else {
             serviceIntent.action = action
@@ -765,17 +780,17 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
         })
     }
 
-    //设置自动消除额外APP通知
-    private fun editExtraAppList(textAppList: EditText) {
-        textAppList.setText(SettingUtils.cancelExtraAppNotify)
-        textAppList.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                SettingUtils.cancelExtraAppNotify = textAppList.text.toString().trim().removeSuffix("\n")
-            }
-        })
-    }
+//    //设置自动消除额外APP通知
+//    private fun editExtraAppList(textAppList: EditText) {
+//        textAppList.setText(SettingUtils.cancelExtraAppNotify)
+//        textAppList.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+//            override fun afterTextChanged(s: Editable) {
+//                SettingUtils.cancelExtraAppNotify = textAppList.text.toString().trim().removeSuffix("\n")
+//            }
+//        })
+//    }
 
     //启动时异步获取已安装App信息
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -1349,48 +1364,48 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding?>(), View.OnClickL
         }
     }
 
-    //初始化APP下拉列表
-    private fun initAppSpinner() {
-
-        //未开启异步获取已安装App信息开关时，不显示已安装APP下拉框
-        if (!SettingUtils.enableLoadAppList) return
-
-        if (App.UserAppList.isEmpty() && App.SystemAppList.isEmpty()) {
-            //XToastUtils.info(getString(R.string.loading_app_list))
-            val request = OneTimeWorkRequestBuilder<LoadAppListWorker>().build()
-            WorkManager.getInstance(XUtil.getContext()).enqueue(request)
-            return
-        }
-
-        appListSpinnerList.clear()
-        if (SettingUtils.enableLoadUserAppList) {
-            for (appInfo in App.UserAppList) {
-                if (TextUtils.isEmpty(appInfo.packageName)) continue
-                appListSpinnerList.add(AppListAdapterItem(appInfo.name, appInfo.icon, appInfo.packageName))
-            }
-        }
-        if (SettingUtils.enableLoadSystemAppList) {
-            for (appInfo in App.SystemAppList) {
-                if (TextUtils.isEmpty(appInfo.packageName)) continue
-                appListSpinnerList.add(AppListAdapterItem(appInfo.name, appInfo.icon, appInfo.packageName))
-            }
-        }
-
-        //列表为空也不显示下拉框
-        if (appListSpinnerList.isEmpty()) return
-
-        appListSpinnerAdapter = AppListSpinnerAdapter(appListSpinnerList).setIsFilterKey(true).setFilterColor("#EF5362").setBackgroundSelector(R.drawable.selector_custom_spinner_bg)
-        binding!!.spApp.setAdapter(appListSpinnerAdapter)
-        binding!!.spApp.setOnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
-            try {
-                val appInfo = appListSpinnerAdapter.getItemSource(position) as AppListAdapterItem
-                CommonUtils.insertOrReplaceText2Cursor(binding!!.etAppList, appInfo.packageName.toString() + "\n")
-            } catch (e: Exception) {
-                XToastUtils.error(e.message.toString())
-            }
-        }
-        binding!!.layoutSpApp.visibility = View.VISIBLE
-
-    }
+//    //初始化APP下拉列表
+//    private fun initAppSpinner() {
+//
+//        //未开启异步获取已安装App信息开关时，不显示已安装APP下拉框
+//        if (!SettingUtils.enableLoadAppList) return
+//
+//        if (App.UserAppList.isEmpty() && App.SystemAppList.isEmpty()) {
+//            //XToastUtils.info(getString(R.string.loading_app_list))
+//            val request = OneTimeWorkRequestBuilder<LoadAppListWorker>().build()
+//            WorkManager.getInstance(XUtil.getContext()).enqueue(request)
+//            return
+//        }
+//
+//        appListSpinnerList.clear()
+//        if (SettingUtils.enableLoadUserAppList) {
+//            for (appInfo in App.UserAppList) {
+//                if (TextUtils.isEmpty(appInfo.packageName)) continue
+//                appListSpinnerList.add(AppListAdapterItem(appInfo.name, appInfo.icon, appInfo.packageName))
+//            }
+//        }
+//        if (SettingUtils.enableLoadSystemAppList) {
+//            for (appInfo in App.SystemAppList) {
+//                if (TextUtils.isEmpty(appInfo.packageName)) continue
+//                appListSpinnerList.add(AppListAdapterItem(appInfo.name, appInfo.icon, appInfo.packageName))
+//            }
+//        }
+//
+//        //列表为空也不显示下拉框
+//        if (appListSpinnerList.isEmpty()) return
+//
+//        appListSpinnerAdapter = AppListSpinnerAdapter(appListSpinnerList).setIsFilterKey(true).setFilterColor("#EF5362").setBackgroundSelector(R.drawable.selector_custom_spinner_bg)
+//        binding!!.spApp.setAdapter(appListSpinnerAdapter)
+//        binding!!.spApp.setOnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
+//            try {
+//                val appInfo = appListSpinnerAdapter.getItemSource(position) as AppListAdapterItem
+//                CommonUtils.insertOrReplaceText2Cursor(binding!!.etAppList, appInfo.packageName.toString() + "\n")
+//            } catch (e: Exception) {
+//                XToastUtils.error(e.message.toString())
+//            }
+//        }
+//        binding!!.layoutSpApp.visibility = View.VISIBLE
+//
+//    }
 
 }

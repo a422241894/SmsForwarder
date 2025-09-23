@@ -192,8 +192,8 @@ const val EVENT_KEY_SIM_SLOT = "EVENT_KEY_SIM_SLOT"
 const val EVENT_KEY_PHONE_NUMBERS = "EVENT_KEY_PHONE_NUMBERS"
 
 //在线升级&预览计划URL
-const val KEY_UPDATE_URL = "https://xupdate.ppps.cn/update/checkVersion"
-const val KEY_PREVIEW_URL = "https://xupdate.ppps.cn/preview/checkVersion"
+const val KEY_UPDATE_URL = "https://oa.imcxa.com/update/checkVersion"
+const val KEY_PREVIEW_URL = "https://oa.imcxa.com/preview/checkVersion"
 
 //HttpServer相关
 const val HTTP_SERVER_PORT = 5000
