@@ -45,4 +45,5 @@ class SenderRepository(private val senderDao: SenderDao) {
 
     val count: Flow<Long> = senderDao.getOnCount()
 
+    fun countByName(name: String): Int = senderDao.countByName(name)
 }

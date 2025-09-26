@@ -10,6 +10,7 @@ import com.alibaba.android.vlayout.VirtualLayoutManager
 import com.idormy.sms.forwarder.R
 import com.idormy.sms.forwarder.adapter.TaskPagingAdapter
 import com.idormy.sms.forwarder.core.BaseFragment
+import com.idormy.sms.forwarder.core.Core
 import com.idormy.sms.forwarder.database.entity.Task
 import com.idormy.sms.forwarder.database.viewmodel.BaseViewModelFactory
 import com.idormy.sms.forwarder.database.viewmodel.TaskViewModel
@@ -105,6 +106,7 @@ class TasksFragment : BaseFragment<FragmentTasksBinding?>(), TaskPagingAdapter.O
             R.id.sb_enable -> {
                 item.status = if (item.status == 0) 1 else 0
                 Log.d(TAG, "sb_enable: ${item.id}, ${item.status}")
+
                 viewModel.updateStatus(item.id, item.status)
             }
 

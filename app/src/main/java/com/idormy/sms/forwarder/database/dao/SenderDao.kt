@@ -63,4 +63,6 @@ interface SenderDao {
     @Query("SELECT COUNT(id) FROM Sender WHERE status = 1")
     fun getOnCount(): Flow<Long>
 
+    @Query("SELECT COUNT(id) FROM Sender WHERE name = :name")
+    fun countByName(name: String): Int
 }

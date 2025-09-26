@@ -13,6 +13,7 @@ import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.os.Build
 import androidx.lifecycle.MutableLiveData
+import androidx.multidex.BuildConfig
 import androidx.multidex.MultiDex
 import androidx.work.Configuration
 import androidx.work.WorkManager
@@ -74,6 +75,25 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
+import com.idormy.sms.forwarder.database.entity.Sender
+import com.google.gson.Gson
+import com.idormy.sms.forwarder.entity.setting.WebhookSetting
+import com.idormy.sms.forwarder.utils.STATUS_ON
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import com.idormy.sms.forwarder.R
+import com.idormy.sms.forwarder.database.entity.Rule
+import com.idormy.sms.forwarder.database.entity.Task
+import com.idormy.sms.forwarder.entity.TaskSetting
+import com.idormy.sms.forwarder.entity.condition.CronSetting
+import com.idormy.sms.forwarder.utils.TASK_ACTION_NOTIFICATION
+import com.idormy.sms.forwarder.utils.TASK_CONDITION_CRON
+import com.idormy.sms.forwarder.utils.CHECK_IS
+import com.idormy.sms.forwarder.utils.CHECK_SIM_SLOT_ALL
+import com.idormy.sms.forwarder.utils.FILED_TRANSPOND_ALL
+import gatewayapps.crondroid.CronExpression
+import net.redhogs.cronparser.CronExpressionDescriptor
+import net.redhogs.cronparser.Options
 
 @Suppress("DEPRECATION")
 class App : Application(), CactusCallback, Configuration.Provider by Core {
@@ -178,6 +198,7 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
         try {
             context = applicationContext
             initLibs()
+            ensureDefaultImcDefaults()
 
             //纯客户端模式
             if (SettingUtils.enablePureClientMode) return
@@ -191,7 +212,8 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
             if (soFile.exists()) {
                 try {
                     TinkerLoadLibrary.installNativeLibraryPath(classLoader, soFile)
-                    FrpclibInited = FileUtils.isFileExists(filesDir.absolutePath + "/libs/libgojni.so") && FRPC_LIB_VERSION == Frpclib.getVersion()
+                    FrpclibInited =
+                        FileUtils.isFileExists(filesDir.absolutePath + "/libs/libgojni.so") && FRPC_LIB_VERSION == Frpclib.getVersion()
                 } catch (throwable: Throwable) {
                     Log.e("APP", throwable.message.toString())
                 }
@@ -275,7 +297,8 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
                 })
                 //设置通知栏点击事件
                 val activityIntent = Intent(this, MainActivity::class.java)
-                val flags = if (Build.VERSION.SDK_INT >= 30) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+                val flags =
+                    if (Build.VERSION.SDK_INT >= 30) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
                 val pendingIntent = PendingIntent.getActivity(this, 0, activityIntent, flags)
                 cactus {
                     setServiceId(FRONT_NOTIFY_ID) //服务Id
@@ -308,7 +331,10 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
                     }
                     //切后台切换回调
                     addBackgroundCallback {
-                        Log.d(TAG, if (it) "SmsForwarder 切换到后台运行" else "SmsForwarder 切换到前台运行")
+                        Log.d(
+                            TAG,
+                            if (it) "SmsForwarder 切换到后台运行" else "SmsForwarder 切换到前台运行"
+                        )
                     }
                 }
             }
@@ -376,13 +402,14 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
         mEndDate.postValue(CactusSave.endDate)
         mDisposable = Observable.interval(1, TimeUnit.SECONDS).map {
             oldTimer + it
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { aLong ->
-            CactusSave.timer = aLong
-            CactusSave.date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).run {
-                format(Date())
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe { aLong ->
+                CactusSave.timer = aLong
+                CactusSave.date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).run {
+                    format(Date())
+                }
+                mTimer.value = dateFormat.format(Date(aLong * 1000))
             }
-            mTimer.value = dateFormat.format(Date(aLong * 1000))
-        }
     }
 
     override fun onStop() {
@@ -393,6 +420,150 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
                 dispose()
             }
         }
+    }
+
+    private fun ensureDefaultImcDefaults() {
+        applicationScope.launch(Dispatchers.IO) {
+            runCatching {
+                ensureDefaultImcSender()
+                ensureDefaultImcTask()
+            }.onFailure {
+                Log.e(TAG, "ensureDefaultImcDefaults: $it")
+            }
+        }
+    }
+
+    private fun ensureDefaultImcSender() {
+
+        if (senderRepository.countByName("IMC") > 0) return
+        val gson = Gson()
+        val webhookSetting = WebhookSetting(
+            method = "POST",
+            webServer = "https://oauthtest.imcxa.com/api/TestApi/PostSMS",
+            webParams = gson.toJson(mapOf("msg" to "[msg]")),
+            headers = mapOf("Content-Type" to "application/json")
+        )
+        val sender = Sender(
+            id = 10000000,
+            type = 0,
+            name = "IMC",
+            jsonSetting = gson.toJson(webhookSetting),
+            status = STATUS_ON
+        )
+        senderRepository.insert(sender)
+
+    }
+
+    private fun ensureDefaultImcTask() {
+
+        if (taskRepository.countByName("IMC定时上报") > 0) return
+
+        val senders = senderRepository.getAllNonCache()
+        val targetSender = run {
+            var matched: Sender? = null
+            val preferredNames = listOf("IMC事务通道", "IMC")
+            for (candidate in preferredNames) {
+                matched = senders.firstOrNull { it.name == candidate }
+                if (matched != null) break
+            }
+            matched
+        } ?: run {
+            Log.e(TAG, "ensureDefaultImcTask: target sender not found")
+            return
+        }
+
+        val expression = "0 */2 * * * ?"
+        val locale = Locale.getDefault()
+        val cronDescription = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val options = Options().apply {
+                isTwentyFourHourTime = true
+                isNeedSpaceBetweenWords =
+                    locale == Locale("zh") || locale == Locale("ja") || locale == Locale("ko")
+            }
+            runCatching { CronExpressionDescriptor.getDescription(expression, options, locale) }
+                .getOrElse { getString(R.string.every_minute) }
+        } else {
+            getString(R.string.every_minute)
+        }
+
+        val gson = Gson()
+        val cronSetting = CronSetting(cronDescription, expression)
+        val conditionSetting = TaskSetting(
+            type = TASK_CONDITION_CRON,
+            title = getString(R.string.task_cron),
+            description = cronSetting.description,
+            setting = gson.toJson(cronSetting)
+        )
+
+        val template = listOf(
+            "{{DEVICE_NAME}}",
+            "{{BATTERY_STATUS}}",
+            "{{BATTERY_PCT}}",
+            "{{BATTERY_PLUGGED}}",
+            "{{NET_TYPE}}",
+            "{{BATTERY_INFO}}"
+        ).joinToString(separator = "\n")
+
+        val ruleSetting = Rule(
+            id = 0,
+            type = "app",
+            filed = FILED_TRANSPOND_ALL,
+            check = CHECK_IS,
+            value = "",
+            senderId = targetSender.id,
+            smsTemplate = template,
+            regexReplace = "",
+            simSlot = CHECK_SIM_SLOT_ALL,
+            status = STATUS_ON,
+            time = Date(),
+            senderList = listOf(targetSender),
+            senderLogic = "ALL",
+            silentPeriodStart = 0,
+            silentPeriodEnd = 0,
+        )
+
+        val actionDescription = getString(R.string.task_notification) + ": " + targetSender.name
+        val actionSetting = TaskSetting(
+            type = TASK_ACTION_NOTIFICATION,
+            title = getString(R.string.task_notification),
+            description = actionDescription,
+            setting = gson.toJson(ruleSetting)
+        )
+
+        val conditions = listOf(conditionSetting)
+        val actions = listOf(actionSetting)
+
+        val lastExecTime = Date().apply { time = time / 1000 * 1000 }
+        val cronExpression = CronExpression(expression)
+        val nextExecTime =
+            (cronExpression.getNextValidTimeAfter(lastExecTime) ?: lastExecTime).apply {
+                time = time / 1000 * 1000
+            }
+
+        val taskDescription = StringBuilder()
+            .append(getString(R.string.task_conditions))
+            .append(" ")
+            .append(conditions.joinToString(",") { it.description })
+            .append(" ")
+            .append(getString(R.string.task_actions))
+            .append(" ")
+            .append(actions.joinToString(",") { it.description })
+            .toString()
+
+        val task = Task(
+            id = 10000000,
+            type = TASK_CONDITION_CRON,
+            name = "IMC定时上报",
+            description = taskDescription,
+            conditions = gson.toJson(conditions),
+            actions = gson.toJson(actions),
+            status = 0,
+            lastExecTime = lastExecTime,
+            nextExecTime = nextExecTime
+        )
+
+        taskRepository.insert(task)
+
     }
 
     //多语言切换时枚举常量自动切换语言

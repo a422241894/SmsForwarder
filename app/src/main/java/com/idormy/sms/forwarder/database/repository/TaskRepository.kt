@@ -36,4 +36,5 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     fun getByType(type: Int): List<Task> = taskDao.getByType(type)
 
+    fun countByName(name: String): Int = taskDao.countByName(name)
 }

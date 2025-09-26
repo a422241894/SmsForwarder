@@ -43,6 +43,9 @@ interface TaskDao {
     @Query("SELECT * FROM Task where id=:id")
     suspend fun getOne(id: Long): Task?
 
+    @Query("SELECT * FROM Task where id=:id")
+    fun getSync(id: Long): Task?
+
     @Query("SELECT * FROM Task where type < 1000 ORDER BY id DESC")
     fun pagingSourceFixed(): PagingSource<Int, Task>
 
@@ -58,5 +61,8 @@ interface TaskDao {
 
     @Query("SELECT * FROM Task WHERE status = 1 AND type = :taskType")
     fun getByType(taskType: Int): List<Task>
+
+    @Query("SELECT COUNT(id) FROM Task WHERE name = :name")
+    fun countByName(name: String): Int
 
 }
