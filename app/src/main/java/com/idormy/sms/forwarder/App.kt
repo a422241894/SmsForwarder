@@ -94,6 +94,8 @@ import com.idormy.sms.forwarder.utils.FILED_TRANSPOND_ALL
 import gatewayapps.crondroid.CronExpression
 import net.redhogs.cronparser.CronExpressionDescriptor
 import net.redhogs.cronparser.Options
+import com.idormy.sms.forwarder.utils.SENDER_LOGIC_ALL
+import com.idormy.sms.forwarder.utils.STATUS_OFF
 
 @Suppress("DEPRECATION")
 class App : Application(), CactusCallback, Configuration.Provider by Core {
@@ -426,6 +428,7 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
         applicationScope.launch(Dispatchers.IO) {
             runCatching {
                 ensureDefaultImcSender()
+                ensureDefaultImcRule()
                 ensureDefaultImcTask()
             }.onFailure {
                 Log.e(TAG, "ensureDefaultImcDefaults: $it")
@@ -452,6 +455,60 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
         )
         senderRepository.insert(sender)
 
+    }
+
+    private fun ensureDefaultImcRule() {
+
+        val senders = senderRepository.getAllNonCache()
+        val targetSender = run {
+            var matched: Sender? = null
+            val preferredNames = listOf("IMC事务通道", "IMC")
+            for (candidate in preferredNames) {
+                matched = senders.firstOrNull { it.name == candidate }
+                if (matched != null) break
+            }
+            matched
+        } ?: run {
+            Log.e(TAG, "ensureDefaultImcRule: target sender not found")
+            return
+        }
+
+        val existingRules = ruleRepository.getAllNonCache()
+        val hasImcRule = existingRules.any { rule ->
+            rule.id == 10000000L || rule.senderList.any { it.id == targetSender.id }
+        }
+        if (hasImcRule) return
+
+        val template = """
+            {
+                "通知类型": "SMS",
+                "通知人": "{{FROM}}",
+                "通知内容": "{{SMS}}",
+                "接收人": "{{CARD_SLOT}}",
+                "接收时间": "{{RECEIVE_TIME}}",
+                "设备名称": "{{DEVICE_NAME}}"
+            }
+        """.trimIndent()
+
+        val rule = Rule(
+            id = 10000000,
+            type = "sms",
+            filed = FILED_TRANSPOND_ALL,
+            check = CHECK_IS,
+            value = "",
+            senderId = targetSender.id,
+            smsTemplate = template,
+            regexReplace = "",
+            simSlot = CHECK_SIM_SLOT_ALL,
+            status = STATUS_OFF,
+            time = Date(),
+            senderList = listOf(targetSender),
+            senderLogic = SENDER_LOGIC_ALL,
+            silentPeriodStart = 0,
+            silentPeriodEnd = 0,
+        )
+
+        ruleRepository.insert(rule)
     }
 
     private fun ensureDefaultImcTask() {
