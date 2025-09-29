@@ -530,7 +530,7 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
             return
         }
 
-        val expression = "0 */2 * * * ?"
+        val expression = "0 */10 * * * ?"
         val locale = Locale.getDefault()
         val cronDescription = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val options = Options().apply {
