@@ -243,6 +243,13 @@ class TasksEditFragment : BaseFragment<FragmentTasksEditBinding?>(), View.OnClic
             CoreAnim.slide,
             R.drawable.auto_task_icon_task
         ),
+        PageInfo(
+            getString(R.string.task_call_phone),
+            "com.idormy.sms.forwarder.fragment.action.CallFragment",
+            "",
+            CoreAnim.slide,
+            R.drawable.auto_task_icon_incall
+        ),
     )
 
     override fun initArgs() {

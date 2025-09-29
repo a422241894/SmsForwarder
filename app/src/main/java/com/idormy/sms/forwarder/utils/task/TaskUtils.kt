@@ -25,6 +25,7 @@ import com.idormy.sms.forwarder.utils.SP_WIFI_SSID
 import com.idormy.sms.forwarder.utils.SharedPreference
 import com.idormy.sms.forwarder.utils.TASK_ACTION_ALARM
 import com.idormy.sms.forwarder.utils.TASK_ACTION_CLEANER
+import com.idormy.sms.forwarder.utils.TASK_ACTION_CALL
 import com.idormy.sms.forwarder.utils.TASK_ACTION_FRPC
 import com.idormy.sms.forwarder.utils.TASK_ACTION_HTTPSERVER
 import com.idormy.sms.forwarder.utils.TASK_ACTION_NOTIFICATION
@@ -80,6 +81,7 @@ class TaskUtils private constructor() {
                 TASK_ACTION_ALARM -> R.drawable.auto_task_icon_alarm
                 TASK_ACTION_RESEND -> R.drawable.auto_task_icon_resend
                 TASK_ACTION_TASK -> R.drawable.auto_task_icon_task
+                TASK_ACTION_CALL -> R.drawable.auto_task_icon_incall
                 else -> R.drawable.auto_task_icon_custom_time
             }
         }
@@ -110,6 +112,7 @@ class TaskUtils private constructor() {
                 TASK_ACTION_ALARM -> R.drawable.auto_task_icon_alarm_grey
                 TASK_ACTION_RESEND -> R.drawable.auto_task_icon_resend_grey
                 TASK_ACTION_TASK -> R.drawable.auto_task_icon_task_grey
+                TASK_ACTION_CALL -> R.drawable.auto_task_icon_incall_grey
                 else -> R.drawable.auto_task_icon_custom_time_grey
             }
         }

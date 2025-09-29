@@ -18,6 +18,7 @@ import com.idormy.sms.forwarder.entity.MsgInfo
 import com.idormy.sms.forwarder.entity.TaskSetting
 import com.idormy.sms.forwarder.entity.action.AlarmSetting
 import com.idormy.sms.forwarder.entity.action.CleanerSetting
+import com.idormy.sms.forwarder.entity.action.CallSetting
 import com.idormy.sms.forwarder.entity.action.FrpcSetting
 import com.idormy.sms.forwarder.entity.action.HttpServerSetting
 import com.idormy.sms.forwarder.entity.action.ResendSetting
@@ -43,6 +44,7 @@ import com.idormy.sms.forwarder.utils.SendUtils
 import com.idormy.sms.forwarder.utils.SettingUtils
 import com.idormy.sms.forwarder.utils.TASK_ACTION_ALARM
 import com.idormy.sms.forwarder.utils.TASK_ACTION_CLEANER
+import com.idormy.sms.forwarder.utils.TASK_ACTION_CALL
 import com.idormy.sms.forwarder.utils.TASK_ACTION_FRPC
 import com.idormy.sms.forwarder.utils.TASK_ACTION_HTTPSERVER
 import com.idormy.sms.forwarder.utils.TASK_ACTION_NOTIFICATION
@@ -60,6 +62,7 @@ import com.xuexiang.xutil.XUtil
 import com.xuexiang.xutil.resource.ResUtils.getString
 import frpclib.Frpclib
 import java.util.Calendar
+import java.util.Locale
 
 //执行每个task具体动作任务
 @Suppress("PrivatePropertyName")
@@ -137,6 +140,48 @@ class ActionWorker(context: Context, params: WorkerParameters) : CoroutineWorker
                             writeLog(String.format(getString(R.string.successful_execution), smsSetting.description), "SUCCESS")
                         } else {
                             writeLog(msg, "ERROR")
+                        }
+                    }
+
+                    TASK_ACTION_CALL -> {
+                        val callSetting = Gson().fromJson(action.setting, CallSetting::class.java)
+                        if (callSetting == null) {
+                            writeLog("callSetting is null")
+                            continue
+                        }
+                        if (ActivityCompat.checkSelfPermission(App.context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            writeLog(getString(R.string.no_call_phone_permission), "ERROR")
+                            continue
+                        }
+                        val simSlot = if (callSetting.simSlot in 1..2) callSetting.simSlot else 1
+                        val simSlotIndex = simSlot - 1
+                        if (App.SimInfoList.isEmpty()) {
+                            App.SimInfoList = PhoneUtils.getSimMultiInfo()
+                        }
+                        val subscriptionId = if (simSlotIndex >= 0) App.SimInfoList[simSlotIndex]?.mSubscriptionId ?: -1 else -1
+                        val resolvedNumber = msgInfo.replaceTemplate(callSetting.phoneNumber).trim()
+                        if (resolvedNumber.isEmpty()) {
+                            writeLog(getString(R.string.invalid_call_phone_number), "ERROR")
+                            continue
+                        }
+                        val regex = Regex(getString(R.string.call_number_regex))
+                        if (!regex.matches(resolvedNumber)) {
+                            writeLog(getString(R.string.invalid_call_phone_number), "ERROR")
+                            continue
+                        }
+                        try {
+                            PhoneUtils.call(resolvedNumber, simSlotIndex, subscriptionId)
+                            successNum++
+                            val desc = String.format(
+                                Locale.getDefault(),
+                                getString(R.string.call_phone_number_with_sim),
+                                simSlot,
+                                resolvedNumber
+                            )
+                            writeLog(String.format(getString(R.string.successful_execution), desc), "SUCCESS")
+                        } catch (e: Exception) {
+                            Log.e(TAG, "call phone error: ${e.message}", e)
+                            writeLog(e.message ?: getString(R.string.invalid_call_phone_number), "ERROR")
                         }
                     }
 

@@ -647,6 +647,57 @@ class PhoneUtils private constructor() {
         }
 
         /**
+         * 拨打电话
+         *
+         * 需添加权限 `<uses-permission android:name="android.permission.CALL_PHONE" />`
+         *
+         * @param phoneNumber 电话号码
+         */
+        fun call(phoneNumber: String?, simSlotIndex: Int = -1, subId: Int = -1) {
+            if (phoneNumber.isNullOrEmpty()) {
+                Log.e(TAG, "call phoneNumber is empty!")
+                return
+            }
+            val intent = IntentUtils.getCallIntent(phoneNumber, true)
+            if (simSlotIndex >= 0) {
+                val slotExtras = arrayOf(
+                    "slot",
+                    "simSlot",
+                    "sim_slot",
+                    "simSlotIndex",
+                    "simSlotId",
+                    "slotId",
+                    "phone",
+                    "simnum",
+                    "phone_type",
+                    "com.android.phone.extra.slot",
+                    "com.android.phone2.extra.slot",
+                    "sim",
+                    "simslot",
+                    "simSlotNo",
+                )
+                for (extra in slotExtras) {
+                    intent.putExtra(extra, simSlotIndex)
+                }
+            }
+            if (subId >= 0) {
+                val subExtras = arrayOf(
+                    "subscription",
+                    "Subscription",
+                    "subscription_id",
+                    "subscriptionId",
+                    "SubscriptionId",
+                    "sub_id",
+                    "subId",
+                )
+                for (extra in subExtras) {
+                    intent.putExtra(extra, subId)
+                }
+            }
+            XUtil.getContext().startActivity(intent)
+        }
+
+        /**
          * 将 subscription_id 转成 卡槽ID： 0=Sim1, 1=Sim2, -1=获取失败
          *
          * TODO: 这里有坑，每个品牌定制系统的字段不太一样，不一定能获取到卡槽ID

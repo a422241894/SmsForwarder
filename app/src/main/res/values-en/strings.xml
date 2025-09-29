@@ -747,6 +747,10 @@
     <string name="phone_numbers_with_tag_hint">Required, separate multiple phone numbers or tag with semicolons</string>
     <string name="phone_numbers_with_tag_error">Invalid Phone Numbers, eg. 15888888888;{{FROM}};{{SMS###\s*SMS,{([^}]+)},{([^}]+)}\s*===$1}}</string>
     <string name="phone_numbers_with_tag_regex">^((\\+?\\d{3,20})|\\{\\{([^#]+)(?:###([^=]+)===(.*?))?\\}\\})(;((\\+?\\d{3,20})|\\{\\{([^#]+)(?:###([^=]+)===(.*?))?\\}\\}))*$</string>
+    <string name="call_number">Phone Number</string>
+    <string name="call_number_hint">Required, the phone number or template to call</string>
+    <string name="call_number_error">Invalid phone number, eg. 15888888888</string>
+    <string name="call_number_regex">^((\\+?\\d{3,20})|\\{\\{([^#]+)(?:###([^=]+)===(.*?))?\\}\\})$</string>
     <string name="msg_content">Msg Content</string>
     <string name="msg_content_hint">Required, one entry within 70 characters, more than 70 characters, one entry for every additional 64 characters</string>
     <string name="msg_content_error">Msg Content cannot be empty, up to 390 characters (6 SMS)</string>
@@ -1010,7 +1014,13 @@
     <string name="task_resend_error">At least one "Original Result" must be selected</string>
     <string name="task_task">Tasks On/Off</string>
     <string name="task_task_tips">Control the enable/disable of the "Auto Task"</string>
-
+    <string name="task_call_phone">Make Call</string>
+    <string name="task_call_phone_tips">Dial the specified phone number</string>
+    <string name="call_phone_number" formatted="false">Dial phone:
+%s</string>
+    <string name="call_phone_number_with_sim">Dial via SIM%1$d: %2$s</string>
+    <string name="no_call_phone_permission">Call phone permission is not granted</string>
+    <string name="invalid_call_phone_number">Failed to resolve a valid phone number</string>
     <string name="second">Second</string>
     <string name="minute">Minute</string>
     <string name="hour">Hour</string>

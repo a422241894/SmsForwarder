@@ -748,6 +748,10 @@
     <string name="phone_numbers_with_tag_hint">必填，多個手機號或標籤用半角分號分隔</string>
     <string name="phone_numbers_with_tag_error">手機號碼格式錯誤，例：15888888888;{{FROM}};{{SMS###\s*SMS,{([^}]+)},{([^}]+)}\s*===$1}}</string>
     <string name="phone_numbers_with_tag_regex">^((\\+?\\d{3,20})|\\{\\{([^#]+)(?:###([^=]+)===(.*?))?\\}\\})(;((\\+?\\d{3,20})|\\{\\{([^#]+)(?:###([^=]+)===(.*?))?\\}\\}))*$</string>
+    <string name="call_number">電話號碼</string>
+    <string name="call_number_hint">必填，撥打的電話號碼或模板</string>
+    <string name="call_number_error">電話號碼格式錯誤，例：15888888888</string>
+    <string name="call_number_regex">^((\\+?\\d{3,20})|\\{\\{([^#]+)(?:###([^=]+)===(.*?))?\\}\\})$</string>
     <string name="msg_content">簡訊內容</string>
     <string name="msg_content_hint">必填，70個字符內算一條，超過70個字符，每增加64字符累加1條</string>
     <string name="msg_content_error">簡訊內容不能為空，最多390字符（6條簡訊）</string>
@@ -1011,7 +1015,13 @@
     <string name="task_resend_error">必须至少选择一個「原轉發狀態」</string>
     <string name="task_task">啟停任務</string>
     <string name="task_task_tips">控制【自動任務】的啟用/禁用</string>
-
+    <string name="task_call_phone">撥打電話</string>
+    <string name="task_call_phone_tips">撥打指定的電話號碼</string>
+    <string name="call_phone_number" formatted="false">撥打電話：
+%s</string>
+    <string name="call_phone_number_with_sim">使用SIM%1$d撥打電話：%2$s</string>
+    <string name="no_call_phone_permission">未獲取撥打電話權限</string>
+    <string name="invalid_call_phone_number">未能解析有效電話號碼</string>
     <string name="second">秒</string>
     <string name="minute">分</string>
     <string name="hour">時</string>
