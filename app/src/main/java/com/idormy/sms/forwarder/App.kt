@@ -96,6 +96,7 @@ import net.redhogs.cronparser.CronExpressionDescriptor
 import net.redhogs.cronparser.Options
 import com.idormy.sms.forwarder.utils.SENDER_LOGIC_ALL
 import com.idormy.sms.forwarder.utils.STATUS_OFF
+import com.idormy.sms.forwarder.utils.task.CronJobScheduler
 
 @Suppress("DEPRECATION")
 class App : Application(), CactusCallback, Configuration.Provider by Core {
@@ -500,7 +501,7 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
             smsTemplate = template,
             regexReplace = "",
             simSlot = CHECK_SIM_SLOT_ALL,
-            status = STATUS_OFF,
+            status = STATUS_ON,
             time = Date(),
             senderList = listOf(targetSender),
             senderLogic = SENDER_LOGIC_ALL,
@@ -552,14 +553,15 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
             setting = gson.toJson(cronSetting)
         )
 
-        val template = listOf(
-            "{{DEVICE_NAME}}",
-            "{{BATTERY_STATUS}}",
-            "{{BATTERY_PCT}}",
-            "{{BATTERY_PLUGGED}}",
-            "{{NET_TYPE}}",
-            "{{BATTERY_INFO}}"
-        ).joinToString(separator = "\n")
+        val template = """
+            {
+                "通知类型": "Notify",
+                "电池状态": "{{BATTERY_STATUS}}",
+                "剩余电量": "{{BATTERY_PCT}}",
+                "网络状态": "{{NET_TYPE}}",
+                "设备名称": "{{DEVICE_NAME}}"
+            }
+        """.trimIndent()
 
         val ruleSetting = Rule(
             id = 0,
@@ -620,7 +622,6 @@ class App : Application(), CactusCallback, Configuration.Provider by Core {
         )
 
         taskRepository.insert(task)
-
     }
 
     //多语言切换时枚举常量自动切换语言
